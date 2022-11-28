@@ -1,24 +1,33 @@
 import pygame as pg
 import random
+from sprites import *
 
 pg.init()
 
-screen=pg.display.set_mode((800,600))
-player_img = pg.image.load("player.png")
-player_img = pg.transform.scale(player_img, (100, 125))
+
 
 BLACK=(0, 0, 0)
 WHITE=(255, 255, 255)
 BLUE=(0, 0, 255)
 GREEN=(132, 181, 159)
 
-x = 0
-y = 0
+WIDTH =1500
+HEIGHT = 1200
 
-speed = 10
+all_sprites = pg.sprite.Group()
+enemies = pg.sprite.Group()
 
-direction_x=1
-direction_y=1
+hero = Player()
+enemy = Enemy()
+all_sprites.add(hero, enemy)
+enemies.add(enemy)
+
+screen=pg.display.set_mode((WIDTH,HEIGHT))
+
+bg = pg.image.load("Background.png")
+bg = pg.transform.scale(bg, (WIDTH, HEIGHT))
+
+
 
 FPS = 144
 clock = pg.time.Clock()
@@ -32,37 +41,25 @@ while playing:
 
 
 
-    screen.fill(BLUE)
+    screen.blit(bg,(0, 0))
 
-    keys = pg.key.get_pressed()
+    all_sprites.update()
 
-    if keys[pg.K_w]:
-        y -= speed
-        print("Up")
 
-    if keys[pg.K_s]:
-        y += speed
-        print("Down")
+    hits = pg.sprite.spritecollide(hero, enemies, True)
+    if hits:
+        hero.hp -=10
+        if hero.hp < 0:
+            pass
 
-    if keys[pg.K_a]:
-        x -= speed
-        print("Left")
-
-    if keys[pg.K_d]:
-        x += speed
-        print("Right")
-
-    if x > 700:
-        x = 700
-    if y > 475:
-        y = 475
-    if x < 0:
-        x = 0
-    if y < 0:
-        y = 0
+    if len(enemies)<2:
+        enemy = Enemy()
+        all_sprites.add(enemy)
+        enemies.add(enemy)
 
 
 
-    screen.blit(player_img, (x,y))
+
+    all_sprites.draw(screen)
     
     pg.display.update()
