@@ -15,8 +15,6 @@ player_img_down = pg.transform.scale(player_img_down, (100, 125))
 
 
 
-
-
 enemy_img = pg.image.load("Minotaur right.png")
 enemy_img = pg.transform.scale(enemy_img, (260, 205))
 enemy_img_left = pg.image.load("Minotaur left.png")
@@ -24,9 +22,6 @@ enemy_img_left = pg.transform.scale(enemy_img_left, (260, 205))
 
 banana_attack = pg.image.load("banana.png")
 banana_attack = pg.transform.scale(banana_attack, (64,64))
-
-
-
 
 
 
@@ -41,7 +36,7 @@ class Player(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.speed = 3
         self.hp = 100
-        
+        self.moving_right = True
 
 
 
@@ -63,11 +58,13 @@ class Player(pg.sprite.Sprite):
             self.pos.x -=self.speed
             self.image = player_img_left
             self.game.bg_y -= 1
+            self.moving_right = False
 
         if keys[pg.K_d]:
             self.pos.x +=self.speed
             self.image = player_img
             self.game.bg_x += 1
+            self.moving_right = True
 
 
         if keys[pg.K_SPACE]:
@@ -76,8 +73,12 @@ class Player(pg.sprite.Sprite):
 
 
     def attack(self):
-       
-        self.attack_object = Ranged_attack(self.game, self.rect.right, self.pos.y)
+        if self.moving_right == True:
+            self.attack_spawn_x = self.rect.right
+        else:
+            self.attack_spawn_x = self.rect.left
+        self.attack_object = Ranged_attack(self.game, self.attack_spawn_x, self.pos.y)
+
 
 
 class Enemy(pg.sprite.Sprite):
@@ -88,6 +89,7 @@ class Enemy(pg.sprite.Sprite):
         self.pos = vec(300,300)
         self.rect.center = self.pos
         self.speed = 7
+        self.hp = 100
 
     def update(self):
 
@@ -114,6 +116,7 @@ class Ranged_attack(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.move_to = vec(pg.mouse.get_pos()) # finner posisjon til musepeker
         self.move_vector = self.move_to - self.pos  # finner "forskjellen" mellom self.pos og posisjon til musepeker
+
 
 
     def update(self):

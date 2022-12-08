@@ -34,7 +34,8 @@ class Game ():
         self.bg_x = 0
         self.bg_y = 0
         self.hero = Player(self)
-        self.enemy = Enemy()
+        self.enemy = Enemy(self)
+        self.attack = Ranged_attack()
 
         self.all_sprites.add(self.hero, self.enemy)
         self.enemies.add(self.enemy)
@@ -70,6 +71,14 @@ class Game ():
                     self.hero.kill()
                     self.hero = Player()
                     self.all_sprites.add(self.hero)
+
+
+            hits = pg.sprite.spritecollide(self.enemies, self.attack, True)
+            if hits:
+                self.enemy.hp -=10
+                if self.enemy.hp <=0:
+                    self.enemy.kill()
+
 
 
 
