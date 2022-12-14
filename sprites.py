@@ -37,7 +37,10 @@ class Player(pg.sprite.Sprite):
         self.speed = 3
         self.hp = 100
         self.moving_right = True
+        self.kills = 0
 
+
+       
 
 
     def update(self):
@@ -72,6 +75,22 @@ class Player(pg.sprite.Sprite):
             
 
 
+
+        if self.pos.x > 1450:
+            self.pos.x = 1450
+        if self.pos.y > 1140:
+            self.pos.y = 1140
+        if self.pos.x < -50:
+            self.pos.x = -50
+        if self.pos.y < -50:
+            self.pos.y = -50
+
+
+
+
+
+
+
     def attack(self):
         if self.moving_right == True:
             self.attack_spawn_x = self.rect.right
@@ -89,7 +108,6 @@ class Enemy(pg.sprite.Sprite):
         self.pos = vec(300,300)
         self.rect.center = self.pos
         self.speed = 7
-        self.hp = 100
 
     def update(self):
 
@@ -125,3 +143,11 @@ class Ranged_attack(pg.sprite.Sprite):
         self.rect.center = self.pos
        
        
+        if self.pos.x > 1600:
+            self.kill
+        if self.pos.y > 1300:
+            self.kill
+        if self.pos.x > -100:
+            self.kill
+        if self.pos.y > -100:
+            self.kill
