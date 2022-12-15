@@ -99,9 +99,9 @@ class Game ():
                 self.text_hp = self.debug_font.render("HP:" + str(self.hero.hp), False, self.BLACK)
                 if self.hero.hp <=0:
                     self.hero.kill()
-                    self.hero = Player()
+                    self.hero = Player(self)
                     self.all_sprites.add(self.hero)
-
+    
 
 
             self.projectile_grp_hits = pg.sprite.groupcollide(self.enemies, self.projectile_grp, True, True)
